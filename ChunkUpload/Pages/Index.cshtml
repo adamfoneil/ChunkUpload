@@ -16,6 +16,8 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>
     <script>
+        Dropzone.autoDiscover = false;
+
         $(document).ready(function () {
             $("#dropzone").dropzone({                
                 chunking: true,
@@ -23,6 +25,6 @@
                 retryChunks: true,
                 maxFilesize: 2000000000 // 2 gig max file size
             });
-        });        
+        });
     </script>
 }  
