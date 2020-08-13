@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.css" integrity="sha256-3SE+Qz2RvIa5gOHSNS50MUTTzRAOYREA5+DOmMNFPYk=" crossorigin="anonymous">
 }
 
-<form asp-page-handler="Upload" enctype="multipart/form-data" id="dropzone">
-    <div class="dz-default dz-message">
-        <button class="dz-button" type="button">Drop files here to upload</button>
-    </div>
+<form asp-page-handler="Upload" enctype="multipart/form-data" id="dropzone" class="dropzone">
 </form>
 
 
@@ -23,7 +20,8 @@
             $("#dropzone").dropzone({                
                 chunking: true,
                 chunkSize: 30000,
-                retryChunks: true                
+                retryChunks: true,
+                maxFilesize: 2000000000 // 2 gig max file size
             });
         });        
     </script>
