@@ -8,23 +8,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.css" integrity="sha256-3SE+Qz2RvIa5gOHSNS50MUTTzRAOYREA5+DOmMNFPYk=" crossorigin="anonymous">
 }
 
-<form asp-page-handler="Upload" enctype="multipart/form-data" id="dropzone">
-    <div class="dz-default dz-message">
-        <button class="dz-button" type="button">Drop files here to upload</button>
-    </div>
+<form asp-page-handler="Upload" enctype="multipart/form-data" id="dropzone" class="dropzone">
 </form>
 
+<button class="upload">Upload</button>
 
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>
     <script>
+        Dropzone.autoDiscover = false;
+        let dropZone = null;
+
+        function chunk() {
+            dropZone.processQueue();
+        }
+
         $(document).ready(function () {
-            $("#dropzone").dropzone({                
+            let element = document.getElementById("dropzone");
+            dropZone = new Dropzone(element, {                
                 chunking: true,
                 chunkSize: 30000,
-                retryChunks: true                
+                retryChunks: true,
+                maxFilesize: 2000000000, // 2 gig max file size
+                autoProcessQueue: false // this stops the chunks from immediate upload
             });
-        });        
+
+            // upload button event listener
+            $('.upload').on('click', chunk);
+        });
     </script>
 }  
