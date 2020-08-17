@@ -1,6 +1,9 @@
 ﻿using ChunkUpload.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChunkUpload.Services
@@ -15,6 +18,8 @@ namespace ChunkUpload.Services
 
         public string BasePath { get; }
 
+        public bool SupportsDownload => false;
+
         public async Task AppendChunk(Stream content, string name)
         {
             string fileName = Path.Combine(BasePath, name);
@@ -23,6 +28,13 @@ namespace ChunkUpload.Services
             {
                 await content.CopyToAsync(localFile);
             }            
+        }
+
+        public Task<byte[]> Download(string name) => throw new NotImplementedException();
+
+        public IEnumerable<Uri> ListContents()
+        {
+            return Directory.GetFiles(BasePath, "*", SearchOption.TopDirectoryOnly).Select(fileName => new Uri($"file://{fileName}"));
         }
     }
 }

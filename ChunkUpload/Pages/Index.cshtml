@@ -13,6 +13,30 @@
 
 <button class="upload">Upload</button>
 
+<h3>links don't work...</h3>
+<p>In blob storage, container uses default permissions, which is private. You'd need a SAS or change container permission.</p>
+<p>In local storage, browsers don't allow access to local files apparently.</p>
+
+<ul>
+    @foreach (var item in Model.ExistingFiles)
+    {
+        <li><a href="@item.ToString()">@item.GetComponents(UriComponents.Path, UriFormat.Unescaped)</a></li>
+    }
+</ul>
+
+@if (Model.Storage.SupportsDownload)
+{
+<form asp-page-handler="Download">
+    <select name="name" class="form-control" onchange="this.form.submit()">
+        <option value="">(select)</option>
+        @foreach (var item in Model.ExistingFiles)
+        {
+            <option value="@item.LocalPath">@item.LocalPath</option>
+        }
+    </select>
+</form>
+}
+
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>
