@@ -26,17 +26,38 @@
 
 @if (Model.Storage.SupportsDownload)
 {
-<form asp-page-handler="Download">
-    <select name="name" class="form-control" onchange="this.form.submit()">
-        <option value="">(select)</option>
-        @foreach (var item in Model.ExistingFiles)
-        {
-            <option value="@item.LocalPath">@item.LocalPath</option>
-        }
-    </select>
-</form>
+    <h2>Download</h2>
+    <form asp-page-handler="Download">
+        <select name="name" class="form-control" onchange="this.form.submit()">
+            <option value="">(select)</option>
+            @foreach (var item in Model.ExistingFiles)
+            {
+                <option value="@item.LocalPath">@item.LocalPath</option>
+            }
+        </select>
+    </form>
 }
 
+<h2>Move</h2>
+<form asp-page-handler="Move">
+    <div class="form-group">
+        <label>New Container:</label>
+        <input type="text" name="container" required="required" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+        <label>Blob:</label>
+        <select name="name" class="form-control">
+            <option value="">(select)</option>
+            @foreach (var item in Model.ExistingFiles)
+            {
+                <option value="@item.LocalPath">@item.LocalPath</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Move Blob</button>
+</form>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>

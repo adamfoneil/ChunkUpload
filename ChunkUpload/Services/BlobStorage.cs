@@ -51,5 +51,29 @@ namespace ChunkUpload.Services
             var result = container.GetBlobs();
             return result.Select(item => new Uri(container.Uri + "/" + item.Name));
         }
+
+        /// <summary>
+        /// doesn't work
+        /// </summary>
+        public async Task MoveTo(string name, string newFolder)
+        {
+            var srcContainer = new BlobContainerClient(_connectionString, ContainerName);
+            var srcBlob = srcContainer.GetAppendBlobClient(name);
+
+            var destContainer = new BlobContainerClient(_connectionString, newFolder);
+            await destContainer.CreateIfNotExistsAsync();            
+            
+            using (var srcStream = await srcBlob.OpenReadAsync())
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await srcStream.CopyToAsync(ms);
+                    var destBlob = destContainer.GetBlockBlobClient(name);
+                    await destBlob.UploadAsync(ms);
+                }
+            }
+                      
+            await srcBlob.DeleteAsync();
+        }
     }
 }

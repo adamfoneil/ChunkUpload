@@ -44,5 +44,15 @@ namespace ChunkUpload.Pages
 
             return File(await Storage.Download(localFile), "application/octet-stream", localFile);
         }
+
+        public async Task<IActionResult> OnPostMoveAsync(string name, string container)
+        {
+            // the incoming name has the container name, which we need to remove here
+            string localFile = Path.GetFileName(name);
+
+            await Storage.MoveTo(localFile, container);
+
+            return new OkResult();
+        }
     }
 }

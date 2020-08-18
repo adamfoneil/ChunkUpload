@@ -8,7 +8,9 @@ namespace ChunkUpload.Interfaces
     public interface IFileStorage
     {
         Task AppendChunk(Stream content, string name);
-        
+
+        Task MoveTo(string name, string newFolder);
+
         IEnumerable<Uri> ListContents();
 
         bool SupportsDownload { get; }
