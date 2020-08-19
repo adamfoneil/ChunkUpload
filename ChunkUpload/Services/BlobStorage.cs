@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Specialized;
+using ChunkUpload.Extensions;
 using ChunkUpload.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -73,7 +74,7 @@ namespace ChunkUpload.Services
 
             sw.Stop();
 
-            Debug.WriteLine($"Copied {srcBlob.Name} from {srcBlob.BlobContainerName} to {newFolder} in {sw.ElapsedMilliseconds} ms ({getTransferRate():n0} bytes/sec)");
+            Debug.WriteLine($"Copied {srcBlob.Name} ({Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds/1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
 
             decimal getTransferRate() => (props.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
         }
