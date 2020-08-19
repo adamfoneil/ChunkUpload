@@ -50,7 +50,7 @@ namespace ChunkUpload.Pages
             // the incoming name has the container name, which we need to remove here
             string localFile = Path.GetFileName(name);
 
-            await Storage.MoveTo(localFile, container);
+            await Storage.CopyTo(localFile, container);
 
             return new OkResult();
         }

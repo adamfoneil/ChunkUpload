@@ -9,7 +9,7 @@ namespace ChunkUpload.Interfaces
     {
         Task AppendChunk(Stream content, string name);
 
-        Task MoveTo(string name, string newFolder);
+        Task CopyTo(string name, string newFolder);
 
         IEnumerable<Uri> ListContents();
 

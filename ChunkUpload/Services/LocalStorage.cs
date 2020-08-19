@@ -37,6 +37,6 @@ namespace ChunkUpload.Services
             return Directory.GetFiles(BasePath, "*", SearchOption.TopDirectoryOnly).Select(fileName => new Uri($"file://{fileName}"));
         }
 
-        public Task MoveTo(string name, string newFolder) => throw new NotImplementedException();
+        public Task CopyTo(string name, string newFolder) => throw new NotImplementedException();
     }
 }
