@@ -52,7 +52,7 @@ namespace ChunkUpload.Pages
 
             await Storage.CopyTo(localFile, container);
 
-            return new OkResult();
+            return Redirect("/Index");
         }
     }
 }

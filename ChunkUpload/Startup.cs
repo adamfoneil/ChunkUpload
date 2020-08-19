@@ -21,6 +21,7 @@ namespace ChunkUpload
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSingleton<IFileStorage>(new LocalStorage("uploads"));
+            
             services.AddSingleton<IFileStorage>(new BlobStorage(Configuration.GetConnectionString("Default"), "chunk-uploads"));
             services.AddRazorPages();
         }

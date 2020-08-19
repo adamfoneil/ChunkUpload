@@ -3,6 +3,7 @@ using Azure.Storage.Blobs.Specialized;
 using ChunkUpload.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace ChunkUpload.Services
         public BlobStorage(string connectionString, string containerName)
         {
             _connectionString = connectionString;
-            ContainerName = containerName;
+            ContainerName = containerName;            
         }
 
         public string ContainerName { get; }
@@ -52,10 +53,16 @@ namespace ChunkUpload.Services
             return result.Select(item => new Uri(container.Uri + "/" + item.Name));
         }
 
+        /// <summary>
+        /// effectively "converts" an Append blob type to a Block type through a download and upload
+        /// </summary>
         public async Task CopyTo(string name, string newFolder)
         {
+            var sw = Stopwatch.StartNew();
+
             var srcContainer = new BlobContainerClient(_connectionString, ContainerName);
-            var srcBlob = srcContainer.GetAppendBlobClient(name);                        
+            var srcBlob = srcContainer.GetAppendBlobClient(name);
+            var props = await srcBlob.GetPropertiesAsync();
             var download = await srcBlob.DownloadAsync();
 
             var destContainer = new BlobContainerClient(_connectionString, newFolder);
@@ -63,6 +70,12 @@ namespace ChunkUpload.Services
 
             var destBlob = destContainer.GetBlockBlobClient(name);
             await destBlob.UploadAsync(download.Value.Content);
+
+            sw.Stop();
+
+            Debug.WriteLine($"Copied {srcBlob.Name} from {srcBlob.BlobContainerName} to {newFolder} in {sw.ElapsedMilliseconds} ms ({getTransferRate():n0} bytes/sec)");
+
+            decimal getTransferRate() => (props.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
         }
     }
 }
