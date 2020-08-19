@@ -62,8 +62,7 @@ namespace ChunkUpload.Services
             var sw = Stopwatch.StartNew();
 
             var srcContainer = new BlobContainerClient(_connectionString, ContainerName);
-            var srcBlob = srcContainer.GetAppendBlobClient(name);
-            var props = await srcBlob.GetPropertiesAsync();
+            var srcBlob = srcContainer.GetAppendBlobClient(name);            
             var download = await srcBlob.DownloadAsync();
 
             var destContainer = new BlobContainerClient(_connectionString, newFolder);
@@ -76,7 +75,7 @@ namespace ChunkUpload.Services
 
             Debug.WriteLine($"Copied {srcBlob.Name} ({Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds/1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
 
-            decimal getTransferRate() => (props.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
+            decimal getTransferRate() => (download.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
         }
     }
 }
