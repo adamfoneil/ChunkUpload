@@ -1,5 +1,4 @@
 ﻿using ChunkUpload.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +29,7 @@ namespace ChunkUpload.Services
             }            
         }
 
-        public Task<byte[]> Download(string name) => throw new NotImplementedException();
+        public Task<Stream> Download(string name) => throw new NotImplementedException();
 
         public IEnumerable<Uri> ListContents()
         {

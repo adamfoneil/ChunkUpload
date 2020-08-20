@@ -35,16 +35,12 @@ namespace ChunkUpload.Services
             await appendBlob.AppendBlockAsync(content);
         }
 
-        public async Task<byte[]> Download(string name)
+        public async Task<Stream> Download(string name)
         {
             var client = new BlockBlobClient(_connectionString, ContainerName, name);
 
-            // might be dangerous for really large files, not sure
-            using (var ms = new MemoryStream())
-            {
-                await client.DownloadToAsync(ms);
-                return ms.ToArray();
-            }
+            var result = await client.DownloadAsync();
+            return result.Value.Content;
         }
 
         public IEnumerable<Uri> ListContents()

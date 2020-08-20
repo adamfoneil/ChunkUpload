@@ -15,6 +15,6 @@ namespace ChunkUpload.Interfaces
 
         bool SupportsDownload { get; }
 
-        Task<byte[]> Download(string name);
+        Task<Stream> Download(string name);
     }
 }
