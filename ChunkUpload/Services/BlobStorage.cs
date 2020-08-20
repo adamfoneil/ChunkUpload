@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Specialized;
 using ChunkUpload.Extensions;
 using ChunkUpload.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,12 +14,14 @@ namespace ChunkUpload.Services
 {
     public class BlobStorage : IFileStorage
     {
-        private readonly string _connectionString;        
+        private readonly string _connectionString;
+        private readonly ILogger _logger;
 
-        public BlobStorage(string connectionString, string containerName)
+        public BlobStorage(string connectionString, string containerName, ILoggerFactory loggerFactory)
         {
             _connectionString = connectionString;
-            ContainerName = containerName;            
+            ContainerName = containerName;
+            _logger = loggerFactory.CreateLogger(nameof(BlobStorage));
         }
 
         public string ContainerName { get; }
@@ -38,7 +41,6 @@ namespace ChunkUpload.Services
         public async Task<Stream> Download(string name)
         {
             var client = new BlockBlobClient(_connectionString, ContainerName, name);
-
             var result = await client.DownloadAsync();
             return result.Value.Content;
         }
@@ -69,7 +71,7 @@ namespace ChunkUpload.Services
 
             sw.Stop();
 
-            Debug.WriteLine($"Copied {srcBlob.Name} ({Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds/1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
+            _logger?.LogInformation($"Copied {srcBlob.Name} ({Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds/1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
 
             decimal getTransferRate() => (download.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
         }

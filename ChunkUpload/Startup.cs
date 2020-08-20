@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ChunkUpload
 {
@@ -20,9 +21,14 @@ namespace ChunkUpload
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<IFileStorage>(new LocalStorage("uploads"));
-            
-            services.AddSingleton<IFileStorage>(new BlobStorage(Configuration.GetConnectionString("Default"), "chunk-uploads"));
+            //services.AddSingleton<IFileStorage>(new LocalStorage("uploads"));            
+
+            services.AddScoped<IFileStorage>((sp) =>
+            {
+                var loggerFactory = sp.GetService<ILoggerFactory>();
+                return new BlobStorage(Configuration.GetConnectionString("Default"), "chunk-uploads", loggerFactory);
+            });
+
             services.AddRazorPages();
         }
 

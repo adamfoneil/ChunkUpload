@@ -14,6 +14,10 @@ namespace ChunkUpload
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(config =>
+                {
+                    config.AddConsole();
+                })
                 .ConfigureAppConfiguration(config =>
                 {
                     config.AddJsonFile("config.json", optional: false);
