@@ -19,6 +19,13 @@ namespace ChunkUpload.Services
 
         public bool SupportsDownload => false;
 
+        public async Task UploadAsync(string name, Stream content)
+        {
+            var fileName = Path.Combine(BasePath, name);
+            await using var localFile = new FileStream(fileName, FileMode.Append);
+            await content.CopyToAsync(localFile);
+        }
+
         public async Task AppendChunk(Stream content, string name)
         {
             string fileName = Path.Combine(BasePath, name);

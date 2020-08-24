@@ -16,5 +16,6 @@ namespace ChunkUpload.Interfaces
         bool SupportsDownload { get; }
 
         Task<Stream> Download(string name);
+        Task UploadAsync(string name, Stream content);
     }
 }
