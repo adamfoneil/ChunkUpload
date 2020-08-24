@@ -2,6 +2,9 @@ using ChunkUpload.Interfaces;
 using ChunkUpload.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,29 @@ namespace ChunkUpload
         {
             //services.AddSingleton<IFileStorage>(new LocalStorage("uploads"));            
 
-            services.AddScoped<IFileStorage>((sp) =>
+            // For IIS
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = int.MaxValue;
+            });
+
+            // For Kestrel
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = int.MaxValue;
+            });
+
+            // Form's MultipartBodyLengthLimit
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue;
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+            });
+
+            services.AddSingleton<IUploadService, UploadService>();
+
+            services.AddSingleton<IFileStorage>((sp) =>
             {
                 var loggerFactory = sp.GetService<ILoggerFactory>();
                 return new BlobStorage(Configuration.GetConnectionString("Default"), "chunk-uploads", loggerFactory);
@@ -35,6 +60,14 @@ namespace ChunkUpload
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            /*
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
+            */
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,6 +88,7 @@ namespace ChunkUpload
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

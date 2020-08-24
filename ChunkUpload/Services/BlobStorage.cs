@@ -28,6 +28,15 @@ namespace ChunkUpload.Services
 
         public bool SupportsDownload => true;
 
+        public async Task UploadAsync(string name, Stream content)
+        {
+            var container = new BlobContainerClient(_connectionString, ContainerName);
+            await container.CreateIfNotExistsAsync();
+            
+            var blob = container.GetBlobClient(name);
+            await blob.UploadAsync(content);
+        }
+
         public async Task AppendChunk(Stream content, string name)
         {
             var container = new BlobContainerClient(_connectionString, ContainerName);
