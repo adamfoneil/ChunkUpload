@@ -33,7 +33,7 @@ namespace ChunkUpload.Services
             using (var localFile = new FileStream(fileName, FileMode.Append))
             {
                 await content.CopyToAsync(localFile);
-            }            
+            }
         }
 
         public Task<Stream> Download(string name) => throw new NotImplementedException();

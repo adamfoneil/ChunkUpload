@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ChunkUpload.Attributes;
+﻿using ChunkUpload.Attributes;
 using ChunkUpload.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ChunkUpload.Controllers
 {
