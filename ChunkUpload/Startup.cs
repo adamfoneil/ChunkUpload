@@ -51,6 +51,7 @@ namespace ChunkUpload
             {
                 var loggerFactory = sp.GetService<ILoggerFactory>();
                 return new BlobStorage(Configuration.GetConnectionString("Default"), "chunk-uploads", loggerFactory);
+                //return new LocalStorage(@"C:\Users\adamo\AppData\Local\uploads");
             });
 
             services.AddRazorPages();

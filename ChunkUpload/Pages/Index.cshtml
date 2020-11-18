@@ -86,55 +86,31 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>
+    <script src="~/js/upload.js"></script>
     <script>
         Dropzone.autoDiscover = false;
-        let dropZone = null;
-
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length !== 2) {
-                return null;
-            }
-
-            return parts.pop().split(";").shift();
-        }
+        let dropZone = null;       
 
         function upload() {
             dropZone.processQueue();
         }
-
-        async function stream(form) {
-            const formData = new FormData(form);
-
-            try {
-                const response = await fetch(form.action,
-                    {
-                        method: form.method,
-                        body: formData,
-                        headers: {
-                            'RequestVerificationToken': getCookie('RequestVerificationToken')
-                        }
-                    });
-
-                console.log(response);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
+     
         $(document).ready(function() {
             const element = document.getElementById("dropzone");
             dropZone = new Dropzone(element,
-                {
-                    timeout: 3600000,
-                    addRemoveLinks: true, // this adds link to remove file from dropzone
-                    maxFilesize: 10485760, // 10 gig max file size
-                    autoProcessQueue: false // this stops the chunks from immediate upload
-                });
+            {
+                chunking: true,
+                timeout: 3600000,
+                addRemoveLinks: true, // this adds link to remove file from dropzone
+                maxFilesize: 10485760, // 10 gig max file size
+                autoProcessQueue: false, // this stops the chunks from immediate upload
+                chunksUploaded: function (file, CompleteUpload) {
+                    console.log("uploaded: " + file);
+                }
+            });
 
             // upload button event listener
             $('#upload').on('click', upload);
-        });
+        });        
     </script>
 }  
