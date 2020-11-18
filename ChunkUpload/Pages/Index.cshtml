@@ -10,7 +10,7 @@
 
 <form id="dropzone" 
       method="post" 
-      action="files/upload" 
+      action="Files/Upload" 
       enctype="multipart/form-data" 
       class="dropzone form-group">
 </form>
@@ -100,6 +100,7 @@
             dropZone = new Dropzone(element,
             {
                 chunking: true,
+                chunkSize: 1000,
                 timeout: 3600000,
                 addRemoveLinks: true, // this adds link to remove file from dropzone
                 maxFilesize: 10485760, // 10 gig max file size

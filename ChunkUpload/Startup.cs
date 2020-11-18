@@ -54,6 +54,12 @@ namespace ChunkUpload
                 //return new LocalStorage(@"C:\Users\adamo\AppData\Local\uploads");
             });
 
+            services.AddSingleton((sp) =>
+            {
+                var env = sp.GetRequiredService<IWebHostEnvironment>();
+                return new BlobChunkUploader(Configuration.GetConnectionString("Default"), "chunk-uploads", new AppDataBlockTracker(env, "blocks.json"));
+            });
+
             services.AddRazorPages();
         }
 

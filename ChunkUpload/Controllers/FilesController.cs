@@ -1,5 +1,5 @@
 ﻿using ChunkUpload.Attributes;
-using ChunkUpload.Interfaces;
+using ChunkUpload.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -7,26 +7,36 @@ namespace ChunkUpload.Controllers
 {
     public class FilesController : Controller
     {
-        private readonly IUploadService _uploadService;
+        //private readonly IUploadService _uploadService;
+        private readonly BlobChunkUploader _uploader;
 
-        public FilesController(IUploadService uploadService)
+        public FilesController(BlobChunkUploader uploader)
         {
-            _uploadService = uploadService;
+            //_uploadService = uploadService;
+            _uploader = uploader;
         }
 
         [HttpPost]
-        [DisableFormValueModelBinding]
+        //[DisableFormValueModelBinding]
         //[ValidateAntiForgeryToken]
-        [RequestSizeLimit(int.MaxValue)]
-        [RequestFormLimits(MultipartBodyLengthLimit = int.MaxValue)]
+        //[RequestSizeLimit(int.MaxValue)]
+        //[RequestFormLimits(MultipartBodyLengthLimit = int.MaxValue)]
         public async Task<IActionResult> UploadAsync()
         {
-            var result = await _uploadService.UploadAsync(Request, ModelState);
+            await _uploader.UploadChunkAsync("default", Request);
+            /*var result = await _uploadService.UploadAsync(Request, ModelState);
             if (!result)
             {
                 return BadRequest(ModelState);
-            }
+            }*/
 
+            return new OkResult();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinishFileAsync([FromQuery]string fileName, [FromQuery]string contentType)
+        {
+            await _uploader.CompleteFileAsync("default", fileName, contentType);
             return new OkResult();
         }
     }
