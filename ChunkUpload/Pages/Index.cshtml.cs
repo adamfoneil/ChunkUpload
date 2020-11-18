@@ -1,4 +1,5 @@
 ﻿using ChunkUpload.Interfaces;
+using ChunkUpload.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -11,10 +12,12 @@ namespace ChunkUpload.Pages
     public class IndexModel : PageModel
     {
         public IEnumerable<Uri> ExistingFiles { get; set; }
+        private readonly BlobChunkUploader _uploader;
 
-        public IndexModel(IFileStorage storage)
+        public IndexModel(IFileStorage storage, BlobChunkUploader uploader)
         {
             Storage = storage;
+            _uploader = uploader;
         }
 
         public IFileStorage Storage { get; }
@@ -53,6 +56,12 @@ namespace ChunkUpload.Pages
             await Storage.CopyTo(localFile, container);
 
             return Redirect("/Index");
+        }
+        
+        public async Task<RedirectResult> OnPostResolveUncommittedAsync()
+        {
+            await _uploader.ResolveUncommittedAsync();
+            return Redirect("/");
         }
     }
 }

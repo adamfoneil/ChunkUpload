@@ -38,6 +38,6 @@ namespace ChunkUpload.Controllers
         {
             await _uploader.CompleteFileAsync("default", fileName, contentType);
             return new OkResult();
-        }
+        }    
     }
 }
