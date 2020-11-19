@@ -8,14 +8,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.css" integrity="sha256-3SE+Qz2RvIa5gOHSNS50MUTTzRAOYREA5+DOmMNFPYk=" crossorigin="anonymous">
 }
 
+@if (TempData.ContainsKey("uploadSuccess"))
+{
+    <div class="alert alert-success">Uploaded <strong>@TempData["uploadSuccess"]</strong> successfully!</div>
+}
+
 <form id="dropzone" 
       method="post" 
-      action="Files/Upload" 
+      action="Files/Stage" 
       enctype="multipart/form-data" 
       class="dropzone form-group">
 </form>
 
 <button id="upload" class="btn btn-primary">Upload</button>
+
+<form id="frmCommit" action="Files/Commit" method="post">    
+    <input type="hidden" name="fileName"/>
+    <input type="hidden" name="returnUrl" value="/"/>
+</form>
 
 <hr />
 
@@ -90,32 +100,6 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/dropzone@5.7.2/dist/dropzone.min.js"></script>
-    <script src="~/js/upload.js"></script>
-    <script>
-        Dropzone.autoDiscover = false;
-        let dropZone = null;       
-
-        function upload() {
-            dropZone.processQueue();
-        }
-     
-        $(document).ready(function() {
-            const element = document.getElementById("dropzone");
-            dropZone = new Dropzone(element,
-            {
-                chunking: true,
-                chunkSize: 1000,
-                timeout: 3600000,
-                addRemoveLinks: true, // this adds link to remove file from dropzone
-                maxFilesize: 10485760, // 10 gig max file size
-                autoProcessQueue: false, // this stops the chunks from immediate upload
-                chunksUploaded: function (file, CompleteUpload) {
-                    console.log("uploaded: " + file);
-                }
-            });
-
-            // upload button event listener
-            $('#upload').on('click', upload);
-        });        
-    </script>
+    <script src="~/js/stream-upload.js"></script>
+    <script src="~/js/dz-upload.js"></script>
 }  

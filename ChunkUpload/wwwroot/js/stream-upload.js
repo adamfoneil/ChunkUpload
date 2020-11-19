@@ -26,7 +26,3 @@ async function stream(form) {
         console.error(error);
     }
 }
-
-async function CompleteUpload(file) {
-    console.log(file);
-}
