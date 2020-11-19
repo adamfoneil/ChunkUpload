@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace AzureUploader.Services
 {
-    public class BlockBlobUploader
+    /// <summary>
+    /// Perform chunked uploads to Azure blob storage
+    /// </summary>
+    public class BlockBlobUploader : IBlockUploader
     {
         private readonly string _connectionString;
         private readonly string _containerName;
@@ -20,7 +23,7 @@ namespace AzureUploader.Services
             _connectionString = connectionString;
             _containerName = containerName;
             _blockTracker = blockTracker;
-        }        
+        }
 
         public async Task ResolveUncommittedAsync()
         {
@@ -42,7 +45,7 @@ namespace AzureUploader.Services
                     catch
                     {
                         // ignore, traits filter doesn't seem to work, so I just try/catch around the invalid blobs
-                    }                    
+                    }
                 }
             }
         }
@@ -68,7 +71,7 @@ namespace AzureUploader.Services
             var blobClient = new BlockBlobClient(_connectionString, _containerName, fileName);
             var blockList = (await blobClient.GetBlockListAsync()).Value;
             var blockIds = blockList.UncommittedBlocks.Select(block => block.Name);
-            
+
             await blobClient.CommitBlockListAsync(blockIds, new BlobHttpHeaders()
             {
                 ContentType = GetContentType()

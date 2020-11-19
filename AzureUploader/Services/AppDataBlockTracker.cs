@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace AzureUploader.Services
 {
+    /// <summary>
+    /// Provides a way to track blockIds for uploads in progress using a json file in App_Data folder
+    /// </summary>
     public class AppDataBlockTracker : BlockTracker
     {
         private Dictionary<string, int> _dictionary;
