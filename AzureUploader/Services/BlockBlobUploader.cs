@@ -23,32 +23,7 @@ namespace AzureUploader.Services
             _connectionString = connectionString;
             _containerName = containerName;
             _blockTracker = blockTracker;
-        }
-
-        public async Task ResolveUncommittedAsync()
-        {
-            var containerClient = new BlobContainerClient(_connectionString, _containerName);
-            var results = containerClient.GetBlobsAsync(traits: BlobTraits.None, states: BlobStates.Uncommitted);
-
-            await foreach (var page in results.AsPages())
-            {
-                foreach (var item in page.Values)
-                {
-                    var blobClient = new BlockBlobClient(_connectionString, _containerName, item.Name);
-
-                    try
-                    {
-                        var blockList = await blobClient.GetBlockListAsync();
-                        var blockIds = blockList.Value.UncommittedBlocks.Select(block => block.Name);
-                        await blobClient.CommitBlockListAsync(blockIds);
-                    }
-                    catch
-                    {
-                        // ignore, traits filter doesn't seem to work, so I just try/catch around the invalid blobs
-                    }
-                }
-            }
-        }
+        }        
 
         public async Task StageAsync(string userName, HttpRequest request)
         {
@@ -83,6 +58,34 @@ namespace AzureUploader.Services
             {
                 var provider = new FileExtensionContentTypeProvider();
                 return (provider.TryGetContentType(fileName, out string contentType)) ? contentType : "application/octet-stream";
+            }
+        }
+
+        /// <summary>
+        /// added this so I could delete and retry uploads that were canceled or not done right when I was figuring out how this worked
+        /// </summary>        
+        public async Task ResolveUncommittedAsync()
+        {
+            var containerClient = new BlobContainerClient(_connectionString, _containerName);
+            var results = containerClient.GetBlobsAsync(traits: BlobTraits.None, states: BlobStates.Uncommitted);
+
+            await foreach (var page in results.AsPages())
+            {
+                foreach (var item in page.Values)
+                {
+                    var blobClient = new BlockBlobClient(_connectionString, _containerName, item.Name);
+
+                    try
+                    {
+                        var blockList = await blobClient.GetBlockListAsync();
+                        var blockIds = blockList.Value.UncommittedBlocks.Select(block => block.Name);
+                        await blobClient.CommitBlockListAsync(blockIds);
+                    }
+                    catch
+                    {
+                        // ignore, traits filter doesn't seem to work, so I just try/catch around the invalid blobs
+                    }
+                }
             }
         }
     }
