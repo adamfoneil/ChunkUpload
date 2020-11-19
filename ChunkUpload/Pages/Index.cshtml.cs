@@ -1,5 +1,5 @@
-﻿using ChunkUpload.Interfaces;
-using ChunkUpload.Services;
+﻿using AzureUploader.Services;
+using ChunkUpload.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

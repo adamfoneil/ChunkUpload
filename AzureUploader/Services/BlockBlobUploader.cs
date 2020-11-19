@@ -1,16 +1,15 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
-using ChunkUpload.Abstract;
-using ChunkUpload.Interfaces;
+using AzureUploader.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChunkUpload.Services
+namespace AzureUploader.Services
 {
-    public class BlockBlobUploader : IBlockBlobUploader
+    public class BlockBlobUploader
     {
         private readonly string _connectionString;
         private readonly string _containerName;

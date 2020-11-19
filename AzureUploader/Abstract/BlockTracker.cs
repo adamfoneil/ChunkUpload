@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChunkUpload.Abstract
+namespace AzureUploader.Abstract
 {
     public abstract class BlockTracker 
     {

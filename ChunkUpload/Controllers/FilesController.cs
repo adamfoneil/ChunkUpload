@@ -1,4 +1,4 @@
-﻿using ChunkUpload.Services;
+﻿using AzureUploader.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

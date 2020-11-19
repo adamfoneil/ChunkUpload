@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChunkUpload", "ChunkUpload\ChunkUpload.csproj", "{DB603B20-B50C-4A59-B71B-5D9C776B19A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChunkUpload.Testing", "ChunkUpload.Testing\ChunkUpload.Testing.csproj", "{C1D19DCF-D1C4-499D-9B97-D6C0F7301862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChunkUpload.Testing", "ChunkUpload.Testing\ChunkUpload.Testing.csproj", "{C1D19DCF-D1C4-499D-9B97-D6C0F7301862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureUploader", "AzureUploader\AzureUploader.csproj", "{969B2769-0CC4-47FE-83E7-FA7D417A3FE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C1D19DCF-D1C4-499D-9B97-D6C0F7301862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1D19DCF-D1C4-499D-9B97-D6C0F7301862}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1D19DCF-D1C4-499D-9B97-D6C0F7301862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{969B2769-0CC4-47FE-83E7-FA7D417A3FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{969B2769-0CC4-47FE-83E7-FA7D417A3FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{969B2769-0CC4-47FE-83E7-FA7D417A3FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{969B2769-0CC4-47FE-83E7-FA7D417A3FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
