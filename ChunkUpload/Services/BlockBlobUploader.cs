@@ -75,6 +75,8 @@ namespace ChunkUpload.Services
                 ContentType = GetContentType()
             });
 
+            await _blockTracker.CompleteFileAsync(userName, fileName);
+
             string GetContentType()
             {
                 var provider = new FileExtensionContentTypeProvider();
