@@ -38,15 +38,26 @@ namespace ChunkUpload.Services
             var key = GetKey(userName, fileName);
             if (!_dictionary.ContainsKey(key)) _dictionary.Add(key, 0);
             _dictionary[key] += 1;
-            var json = JsonSerializer.Serialize(_dictionary);
-            System.IO.File.WriteAllText(_fileName, json);
+            SaveDictionary();
             return await Task.FromResult(_dictionary[key]);
         }
 
-        protected override async Task<IEnumerable<int>> QueryBlocksAsync(string userName, string fileName)
+        private void SaveDictionary()
         {
-            var blockIds = Enumerable.Range(0, _dictionary[GetKey(userName, fileName)]).Select(i => i);
-            return await Task.FromResult(blockIds);
+            var json = JsonSerializer.Serialize(_dictionary);
+            System.IO.File.WriteAllText(_fileName, json);
+        }
+
+        public override async Task CompleteFileAsync(string userName, string fileName)
+        {
+            var key = GetKey(userName, fileName);
+            if (_dictionary.ContainsKey(key))
+            {
+                _dictionary.Remove(key);
+                SaveDictionary();
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

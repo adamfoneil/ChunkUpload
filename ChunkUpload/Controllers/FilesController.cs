@@ -8,9 +8,9 @@ namespace ChunkUpload.Controllers
     public class FilesController : Controller
     {
         //private readonly IUploadService _uploadService;
-        private readonly BlobChunkUploader _uploader;
+        private readonly BlockBlobUploader _uploader;
 
-        public FilesController(BlobChunkUploader uploader)
+        public FilesController(BlockBlobUploader uploader)
         {
             //_uploadService = uploadService;
             _uploader = uploader;
@@ -23,7 +23,7 @@ namespace ChunkUpload.Controllers
         //[RequestFormLimits(MultipartBodyLengthLimit = int.MaxValue)]
         public async Task<IActionResult> UploadAsync()
         {
-            await _uploader.UploadChunkAsync("default", Request);
+            await _uploader.StageAsync("default", Request);
             /*var result = await _uploadService.UploadAsync(Request, ModelState);
             if (!result)
             {
@@ -34,9 +34,9 @@ namespace ChunkUpload.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FinishFileAsync([FromQuery]string fileName, [FromQuery]string contentType)
+        public async Task<IActionResult> FinishFileAsync([FromQuery]string fileName)
         {
-            await _uploader.CompleteFileAsync("default", fileName, contentType);
+            await _uploader.CommitAsync("default", fileName);
             return new OkResult();
         }    
     }

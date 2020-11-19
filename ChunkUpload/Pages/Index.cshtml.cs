@@ -12,9 +12,9 @@ namespace ChunkUpload.Pages
     public class IndexModel : PageModel
     {
         public IEnumerable<Uri> ExistingFiles { get; set; }
-        private readonly BlobChunkUploader _uploader;
+        private readonly BlockBlobUploader _uploader;
 
-        public IndexModel(IFileStorage storage, BlobChunkUploader uploader)
+        public IndexModel(IFileStorage storage, BlockBlobUploader uploader)
         {
             Storage = storage;
             _uploader = uploader;
@@ -22,7 +22,7 @@ namespace ChunkUpload.Pages
 
         public IFileStorage Storage { get; }
 
-        public async void OnGet()
+        public void OnGet()
         {
             ExistingFiles = Storage.ListContents();
         }
