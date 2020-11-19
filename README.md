@@ -13,4 +13,5 @@ Here's my approach:
 - My Dropzone JS implementation is [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/wwwroot/js/dz-upload.js).
 
 ## NuGet package
+This is in beta for .NET 5.
 [![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader)
