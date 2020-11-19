@@ -27,8 +27,3 @@ $(document).ready(function () {
     // upload button event listener
     $('#upload').on('click', upload);
 });        
-
-
-async function CompleteUpload(file) {
-    await fetch()
-}
