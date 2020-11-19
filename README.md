@@ -11,3 +11,6 @@ Here's my approach:
 - My upload Razor page is [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Pages/Index.cshtml), and the important parts are [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Pages/Index.cshtml#L16-L28). This page has a lot of junk in it from prior iterations. The part I've highlighted is the most relevant thing to see here. There are two forms and an upload button. One form is `staging` -- the hidden form is for `committing`.
 
 - My Dropzone JS implementation is [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/wwwroot/js/dz-upload.js).
+
+## NuGet package
+[![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader/)
