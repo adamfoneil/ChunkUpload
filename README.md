@@ -16,3 +16,8 @@ Here's my approach:
 This is in beta for .NET 5.
 
 [![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader)
+
+## Credits
+This [SO answer](https://stackoverflow.com/a/61484128/2023653) gave me the idea for what became my `BlockBlobUploader` class. The answer here used a local file example. I knew this would have to be heavily reworked to be stateless for web use. This is what led to my `BlockTracker` abstract class.
+
+[Vadim17](https://github.com/vadim17) contributed a [streaming upload](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Services/UploadService.cs) example in this repo. Vadim does amazing work. But I ended up not using his implementation because it didn't integrate with DropzoneJS. I like Dropzone's user experience with the animations, drag and drop, etc.
