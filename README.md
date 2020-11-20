@@ -17,6 +17,9 @@ This is in beta for .NET 5.
 
 [![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader)
 
+## Video Walkthrough
+Here's a [walkthrough](https://1drv.ms/v/s!AvguHRnyJtWMmbIk64wgwuoWM-Jzww?e=EtmKQc) on this solution in PowerPoint.
+
 ## Credits
 This [SO answer](https://stackoverflow.com/a/61484128/2023653) gave me the idea for what became my `BlockBlobUploader` class. The answer here used a local file example. I knew this would have to be heavily reworked to be stateless for web use. This is what led to my `BlockTracker` abstract class.
 
