@@ -54,7 +54,7 @@ namespace AzureUploader.Services
                 ContentType = GetContentType()
             });
 
-            await _blockTracker.CompleteFileAsync(userName, fileName);
+            await _blockTracker.CompleteFileAsync(userName, blobName);
 
             string GetContentType()
             {
