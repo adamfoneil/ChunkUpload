@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 
 namespace AzureUploader.Services
 {
@@ -60,5 +61,7 @@ namespace AzureUploader.Services
 
             await Task.CompletedTask;
         }
+
+        public override async Task<bool> HasUploadsInProgress(string userName) => await Task.FromResult(_dictionary.Keys.Any(key => key.StartsWith($"{userName}.")));        
     }
 }

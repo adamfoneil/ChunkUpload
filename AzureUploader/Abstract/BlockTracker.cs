@@ -14,7 +14,9 @@ namespace AzureUploader.Abstract
 
         public abstract Task CompleteFileAsync(string userName, string fileName);
         
-        protected abstract Task<int> IncrementBlockAsync(string userName, string fileName);        
+        protected abstract Task<int> IncrementBlockAsync(string userName, string fileName);
+
+        public abstract Task<bool> HasUploadsInProgress(string userName);
 
         private string ToBase64(int id) => Convert.ToBase64String(Encoding.UTF8.GetBytes(id.ToString("d6")));
     }

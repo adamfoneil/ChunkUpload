@@ -95,5 +95,7 @@ namespace AzureUploader.Services
         {
             prefix, fileName
         }.Where(s => !string.IsNullOrEmpty(s)));
+
+        public async Task<bool> HasUploadsInProgress(string userName) => await _blockTracker.HasUploadsInProgress(userName);        
     }
 }
