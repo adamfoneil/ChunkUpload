@@ -25,25 +25,27 @@ namespace AzureUploader.Services
             _blockTracker = blockTracker;
         }        
 
-        public async Task StageAsync(string userName, HttpRequest request)
+        public async Task StageAsync(string userName, HttpRequest request, string prefix = null)
         {
             var containerClient = new BlobContainerClient(_connectionString, _containerName);
-            await containerClient.CreateIfNotExistsAsync();
+            await containerClient.CreateIfNotExistsAsync();            
 
             foreach (var file in request.Form.Files)
             {
-                var client = new BlockBlobClient(_connectionString, _containerName, file.FileName);
+                string blobName = BlobName(prefix, file.FileName);
+                var client = new BlockBlobClient(_connectionString, _containerName, blobName);
                 using (var stream = file.OpenReadStream())
                 {
-                    var blockId = await _blockTracker.AddBlockAsync(userName, file.FileName);
+                    var blockId = await _blockTracker.AddBlockAsync(userName, blobName);
                     await client.StageBlockAsync(blockId, stream);
                 }
             }
         }
 
-        public async Task CommitAsync(string userName, string fileName)
+        public async Task CommitAsync(string userName, string fileName, string prefix = null)
         {
-            var blobClient = new BlockBlobClient(_connectionString, _containerName, fileName);
+            string blobName = BlobName(prefix, fileName);
+            var blobClient = new BlockBlobClient(_connectionString, _containerName, blobName);
             var blockList = (await blobClient.GetBlockListAsync()).Value;
             var blockIds = blockList.UncommittedBlocks.Select(block => block.Name);
 
@@ -88,5 +90,10 @@ namespace AzureUploader.Services
                 }
             }
         }
+
+        public static string BlobName(string prefix, string fileName) => string.Join("/", new string[]
+        {
+            prefix, fileName
+        }.Where(s => !string.IsNullOrEmpty(s)));
     }
 }
