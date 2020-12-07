@@ -33,11 +33,10 @@ namespace AzureUploader.Services
 
             foreach (var file in request.Form.Files)
             {
-                string blobName = BlobName(prefix, file.FileName);
-                var client = new BlockBlobClient(_connectionString, _containerName, blobName);
+                var client = GetBlobClient(file.FileName, prefix);
                 using (var stream = file.OpenReadStream())
                 {
-                    var blockId = await _blockTracker.AddBlockAsync(userName, blobName);
+                    var blockId = await _blockTracker.AddBlockAsync(userName, client.Name);
                     await client.StageBlockAsync(blockId, stream);
                 }
             }
@@ -45,21 +44,20 @@ namespace AzureUploader.Services
 
         public async Task CommitAsync(string userName, string fileName, string prefix = null, IDictionary<string, string> metadata = null)
         {
-            string blobName = BlobName(prefix, fileName);
-            var blobClient = new BlockBlobClient(_connectionString, _containerName, blobName);
-            var blockList = (await blobClient.GetBlockListAsync()).Value;
+            var client = GetBlobClient(fileName, prefix);
+            var blockList = (await client.GetBlockListAsync()).Value;
             var blockIds = blockList.UncommittedBlocks.Select(block => block.Name);
 
-            await blobClient.CommitBlockListAsync(blockIds, new BlobHttpHeaders()
+            await client.CommitBlockListAsync(blockIds, new BlobHttpHeaders()
             {
                 ContentType = GetContentType()
             });
 
-            await _blockTracker.CompleteFileAsync(userName, blobName);
+            await _blockTracker.CompleteFileAsync(userName, client.Name);
 
             if (metadata != null)
             {
-                await blobClient.SetMetadataAsync(metadata);
+                await client.SetMetadataAsync(metadata);
             }
 
             string GetContentType()
@@ -103,5 +101,8 @@ namespace AzureUploader.Services
         }.Where(s => !string.IsNullOrEmpty(s)));
 
         public async Task<bool> HasUploadsInProgress(string userName) => await _blockTracker.HasUploadsInProgress(userName);        
+
+        private BlockBlobClient GetBlobClient(string fileName, string prefix = null) => new BlockBlobClient(_connectionString, _containerName, BlobName(prefix, fileName));
+
     }
 }
