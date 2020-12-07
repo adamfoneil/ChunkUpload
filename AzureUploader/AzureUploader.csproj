@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/adamfoneil/ChunkUpload</PackageProjectUrl>
     <Description>Implement chunked uploads to Azure blob storage. Intended for use with DropzoneJS.</Description>
     <Version>1.0.3</Version>
-    <PackageReleaseNotes>https://github.com/adamfoneil/ChunkUpload/issues/7</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
