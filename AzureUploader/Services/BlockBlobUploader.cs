@@ -4,6 +4,7 @@ using Azure.Storage.Blobs.Specialized;
 using AzureUploader.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace AzureUploader.Services
             }
         }
 
-        public async Task CommitAsync(string userName, string fileName, string prefix = null)
+        public async Task CommitAsync(string userName, string fileName, string prefix = null, IDictionary<string, string> metadata = null)
         {
             string blobName = BlobName(prefix, fileName);
             var blobClient = new BlockBlobClient(_connectionString, _containerName, blobName);
@@ -55,6 +56,11 @@ namespace AzureUploader.Services
             });
 
             await _blockTracker.CompleteFileAsync(userName, blobName);
+
+            if (metadata != null)
+            {
+                await blobClient.SetMetadataAsync(metadata);
+            }
 
             string GetContentType()
             {
