@@ -4,12 +4,16 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using System;
 
 namespace AzureUploader.Services
 {
     /// <summary>
-    /// Provides a way to track blockIds for uploads in progress using a json file in App_Data folder
+    /// Provides a way to track blockIds for uploads in progress using a json file in App_Data folder.
+    /// Note this doesn't work well when uploading multiple files, and is not tested in a multi-user environment.
+    /// I did this when uploading individual files during initial development
     /// </summary>
+    [Obsolete("Doesn't work with parallel uploads.")]
     public class AppDataBlockTracker : BlockTracker
     {
         private Dictionary<string, int> _dictionary;

@@ -57,9 +57,9 @@ namespace ChunkUpload
             });
 
             services.AddSingleton((sp) =>
-            {
-                var env = sp.GetRequiredService<IWebHostEnvironment>();
-                return new BlockBlobUploader(Configuration.GetConnectionString("Default"), "chunk-uploads", new AppDataBlockTracker(env, "blocks.json"));
+            {                
+                var blockTracker = new DbBlockTracker(Configuration.GetConnectionString("LocalDb"));
+                return new BlockBlobUploader(Configuration.GetConnectionString("Default"), "chunk-uploads", blockTracker);
             });
 
             services.AddRazorPages();

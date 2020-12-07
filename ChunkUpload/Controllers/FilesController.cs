@@ -21,11 +21,10 @@ namespace ChunkUpload.Controllers
         }
 
         [HttpPost]
-        public async Task<RedirectResult> Commit([FromForm]string fileName, [FromForm]string returnUrl)
+        public async Task<IActionResult> Commit([FromForm]string fileName)
         {            
-            await _uploader.CommitAsync("default", fileName);
-            TempData.Add("uploadSuccess", fileName);
-            return Redirect(returnUrl);
+            await _uploader.CommitAsync("default", fileName);            
+            return new OkResult();
         }    
     }
 }
