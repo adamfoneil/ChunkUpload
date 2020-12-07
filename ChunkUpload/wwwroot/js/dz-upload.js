@@ -2,7 +2,7 @@
 let dropZone = null;
 
 function upload() {
-    dropZone.autoProcessQueue = true;
+    dropZone.options.autoProcessQueue = true;
     dropZone.processQueue();
 }
 
@@ -32,6 +32,9 @@ $(document).ready(function () {
             } catch (e) {
                 console.log(e);
             }
+        },
+        queueComplete: function () {
+            dropZone.options.autoProcessQueue = false;
         }
     });
 
