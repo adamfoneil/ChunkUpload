@@ -53,12 +53,12 @@ namespace AzureUploader.Services
                 ContentType = GetContentType()
             });
 
-            await _blockTracker.CompleteFileAsync(userName, client.Name);
-
             if (metadata != null)
             {
                 await client.SetMetadataAsync(metadata);
             }
+
+            await _blockTracker.CompleteFileAsync(userName, client.Name, client);
 
             string GetContentType()
             {

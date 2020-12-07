@@ -1,4 +1,5 @@
-﻿using AzureUploader.Abstract;
+﻿using Azure.Storage.Blobs.Specialized;
+using AzureUploader.Abstract;
 using Dapper;
 using Dapper.CX.Extensions;
 using Microsoft.Data.SqlClient;
@@ -20,7 +21,7 @@ namespace AzureUploader.Services
             _connectionString = connectionString;
         }
 
-        public override async Task CompleteFileAsync(string userName, string fileName)
+        public override async Task CompleteFileAsync(string userName, string fileName, BlockBlobClient client)
         {
             await InitializeAsync();
 

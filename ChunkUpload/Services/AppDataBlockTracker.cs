@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using System;
+using Azure.Storage.Blobs.Specialized;
 
 namespace ChunkUpload.Services
 {
@@ -54,7 +55,7 @@ namespace ChunkUpload.Services
             System.IO.File.WriteAllText(_fileName, json);
         }
 
-        public override async Task CompleteFileAsync(string userName, string fileName)
+        public override async Task CompleteFileAsync(string userName, string fileName, BlockBlobClient client)
         {
             var key = GetKey(userName, fileName);
             if (_dictionary.ContainsKey(key))

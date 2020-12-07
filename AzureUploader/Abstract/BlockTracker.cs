@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure.Storage.Blobs.Specialized;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace AzureUploader.Abstract
             return ToBase64(blockId);
         }
 
-        public abstract Task CompleteFileAsync(string userName, string fileName);
+        public abstract Task CompleteFileAsync(string userName, string fileName, BlockBlobClient blobClient);
         
         protected abstract Task<int> IncrementBlockAsync(string userName, string fileName);
 
