@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using System;
 
-namespace AzureUploader.Services
+namespace ChunkUpload.Services
 {
     /// <summary>
     /// Provides a way to track blockIds for uploads in progress using a json file in App_Data folder.
