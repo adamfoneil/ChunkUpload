@@ -47,10 +47,12 @@ namespace AzureUploader.Services
 
             var param = new { userName, fileName };
 
+            const string whereClause = "[UserName]=@userName AND [Filename]=@fileName";
+
             using (var cn = GetConnection())
             {
                 var affected = await cn.ExecuteAsync(
-                    $"UPDATE [{schema}].[{tableName}] SET [Value]=[Value]+1 WHERE [UserName]=@userName AND [Filename]=@fileName",
+                    $"UPDATE [{schema}].[{tableName}] SET [Value]=[Value]+1 WHERE {whereClause}",
                     param);
 
                 if (affected == 0)
@@ -60,7 +62,7 @@ namespace AzureUploader.Services
                         VALUES (@userName, @fileName, 1, getutcdate())", param);
                 }
 
-                return await cn.QuerySingleAsync<int>($"SELECT [Value] FROM [{schema}].[{tableName}] WHERE [UserName]=@userName AND [Filename]=@fileName", param);
+                return await cn.QuerySingleAsync<int>($"SELECT [Value] FROM [{schema}].[{tableName}] WHERE {whereClause}", param);
             }
         }
 
