@@ -1,3 +1,5 @@
+[![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader)
+
 This came from a need to offer a robust, standardized file uploads in Azure blob storage, with an emphasis on large file support. It's pretty easy to implement blob storage uploads on small files. In my experience, though, things get weird when you need to support large files -- meaning files large enough to timeout on a single request. I use and love [DropzoneJS](https://www.dropzonejs.com/) because, among other things, it supports chunking out of the box. But as a JS/frontend library, it provides no guidance how to implement upload chunking on the backend. This is just the nature of frontend libraries, not a shortcoming. So, in this repo, I worked through the problem of implementing chunked uploads to blob storage. And while I love Azure and blob storage, I think it has a discoverability problem when it comes to advanced functionality. So, if this functionality is obvious to everyone, congratulations! It was not obvious to me.
 
 Here's my approach:
@@ -11,11 +13,6 @@ Here's my approach:
 - My upload Razor page is [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Pages/Index.cshtml), and the important parts are [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Pages/Index.cshtml#L16-L28). This page has a lot of junk in it from prior iterations. The part I've highlighted is the most relevant thing to see here. There are two forms and an upload button. One form is `staging` -- the hidden form is for `committing`.
 
 - My Dropzone JS implementation is [here](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/wwwroot/js/dz-upload.js).
-
-## NuGet package
-This is in beta for .NET 5.
-
-[![Nuget](https://img.shields.io/nuget/v/AO.AzureUploader)](https://www.nuget.org/packages/AO.AzureUploader)
 
 ## Video Walkthrough
 Here's a [walkthrough](https://1drv.ms/v/s!AvguHRnyJtWMmbIk64wgwuoWM-Jzww?e=EtmKQc) on this solution in PowerPoint.
