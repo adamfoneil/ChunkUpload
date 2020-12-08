@@ -17,7 +17,7 @@ Here's my approach:
 ## Video Walkthrough
 Here's a [walkthrough](https://1drv.ms/v/s!AvguHRnyJtWMmbIk64wgwuoWM-Jzww?e=EtmKQc) on this solution in PowerPoint.
 
-A few things have changed since I made this video, but it's mostly pretty good for understanding what this does. The main change now is that in order to support multiple concurrent uploads, my `Files/Commit` handler doesn't redirect anymnore. A redirect durring the `Commit` step would interrupt other downloads in progress. Therefore, I use an ajax `fetch` during `Commit` so that the Upload page is allowed to keep running.
+A few things have changed since I made this video, but it's mostly pretty good for understanding what this does. The main change now is that in order to support multiple concurrent uploads, my `Files/Commit` handler doesn't redirect anymnore. A redirect durring the `Commit` step would interrupt other downloads in progress. Therefore, I use an ajax [fetch](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/wwwroot/js/dz-upload.js#L25-L29) during `Commit` so that the Upload page is allowed to keep running.
 
 ## Credits
 This [SO answer](https://stackoverflow.com/a/61484128/2023653) gave me the idea for what became my `BlockBlobUploader` class. The answer here used a local file example. I knew this would have to be heavily reworked to be stateless for web use. This is what led to my `BlockTracker` abstract class.
