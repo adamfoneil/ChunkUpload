@@ -14,10 +14,10 @@ namespace AzureUploader.Services
 
         public AppDataTempFileProvider(string basePath, string userName)
         {
-            _basePath = Path.Combine(basePath, userName, "App_Data");
+            _basePath = Path.Combine(basePath, userName);
         }
 
-        public AppDataTempFileProvider(IWebHostEnvironment environment, string userName) : this(environment.ContentRootPath, userName)
+        public AppDataTempFileProvider(IWebHostEnvironment environment, string userName) : this(Path.Combine(environment.ContentRootPath, "App_Data"), userName)
         {
         }
         
