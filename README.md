@@ -23,3 +23,22 @@ A few things have changed since I made this video, but it's mostly pretty good f
 This [SO answer](https://stackoverflow.com/a/61484128/2023653) gave me the idea for what became my `BlockBlobUploader` class. The answer here used a local file example. I knew this would have to be heavily reworked to be stateless for web use. This is what led to my `BlockTracker` abstract class.
 
 [Vadim17](https://github.com/vadim17) contributed a [streaming upload](https://github.com/adamfoneil/ChunkUpload/blob/master/ChunkUpload/Services/UploadService.cs) example in this repo. Vadim does amazing work. See his [Upwork profile](https://www.upwork.com/freelancers/~01a778def0bc56bf99). But I ended up not using his implementation because it didn't integrate with DropzoneJS. I like Dropzone's user experience with the animations, drag and drop, etc.
+
+## AppDataTempFileProvider
+Another service class offered in this package is [AppDataTempFileProvider](https://github.com/adamfoneil/ChunkUpload/blob/master/AzureUploader/Services/AppDataTempFileProvider.cs) which implements [ITempFileProvider](https://github.com/adamfoneil/ChunkUpload/blob/master/AzureUploader/Interfaces/ITempFileProvider.cs). This came up because I needed a way to upload to blob storage from a byte array without using `MemoryStream`, which is problematic for large files. The use is in a closed-source project, so I don't have an example or test built up I can show directly. But to use this, inject `ITempFileProvider` into your controller or page, and use it instead of a `MemoryStream`. This will save the byte array as a temp file in the `App_Data` folder. Then you can perform any operation on it (typically uploading to blob storage), and be assured that the temp file will be deleted when the operation completes. So instead of this:
+
+```csharp
+using (var stream = new MemoryStream(byteArray))
+{
+    await blobClient.UploadAsync(stream);
+}
+```
+
+Do this:
+```csharp
+// injected from ctor
+private readonly ITempFileProvider _tempFile;
+
+// then for your upload
+await _tempFile.ExecuteAsync(byteArray, async (stream) => await blobClient.UploadAsync(stream));
+```
