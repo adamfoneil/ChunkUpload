@@ -6,7 +6,8 @@
 {
     <ul>
         <li>
-            <a href="#" class="blob-link">@item.Name</a>, @Readable.FileSize(item.Properties.ContentLength ?? 0)
+            Via JS: <a href="#" class="blob-link">@item.Name</a>, @Readable.FileSize(item.Properties.ContentLength ?? 0)<br/>
+            Via Redirect: <a href="@Url.Action("Blob", "Download", new { name = item.Name })" target="_blank">@item.Name</a>
         </li>
     </ul>
     <hr/>
