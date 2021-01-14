@@ -88,7 +88,7 @@ namespace ChunkUpload.Services
 
             sw.Stop();
 
-            _logger?.LogInformation($"Copied {srcBlob.Name} ({Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds / 1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
+            _logger?.LogInformation($"Copied {srcBlob.Name} ({Extensions.Readable.FileSize(download.Value.ContentLength)}) from {srcBlob.BlobContainerName} to {newFolder} in {(sw.ElapsedMilliseconds / 1000m):n1} sec ({getTransferRate():n0} bytes/sec)");
 
             decimal getTransferRate() => (download.Value.ContentLength / (decimal)sw.ElapsedMilliseconds) * 1000;
         }

@@ -62,6 +62,8 @@ namespace ChunkUpload
                 return new BlockBlobUploader(Configuration.GetConnectionString("Default"), "chunk-uploads", blockTracker);
             });
 
+            services.AddScoped((sp) => new BlobAccess(Configuration.GetConnectionString("Default")));
+            services.AddSingleton<Readable>();
             services.AddRazorPages();
         }
 

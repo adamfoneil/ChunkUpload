@@ -1,0 +1,33 @@
+﻿@page
+@model ChunkUpload.Pages.DownloadModel
+@inject Readable Readable
+ 
+@foreach (var item in Model.BlobItems.OrderByDescending(b => b.Properties.ContentLength))
+{
+    <ul>
+        <li>
+            <a href="#" class="blob-link">@item.Name</a>, @Readable.FileSize(item.Properties.ContentLength ?? 0)
+        </li>
+    </ul>
+    <hr/>
+}
+
+@section Scripts {
+    <script>
+        $(".blob-link").click(async function (ev) {
+            // don't do the regular thing
+            ev.preventDefault();
+
+            // get the SAS url
+            let name = ev.target.innerText;
+            let url = await (await fetch('/Download/GetSasUrl?name=' + name)).text();
+
+            // then execute, help from https://stackoverflow.com/a/54626214/2023653
+            let link = document.createElement("a");
+            link.download = name;            
+            link.href = url;            
+            link.click();
+        });
+    </script>
+    
+}
