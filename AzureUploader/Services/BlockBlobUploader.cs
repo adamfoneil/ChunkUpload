@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace AzureUploader.Services
 {
     /// <summary>
@@ -42,7 +43,7 @@ namespace AzureUploader.Services
             }
         }
 
-        public async Task CommitAsync(string userName, string fileName, string prefix = null, IDictionary<string, string> metadata = null)
+        public async Task CommitAsync(string userName, string fileName, string prefix = null, IDictionary<string, string> metadata = null, byte[] hash = null)
         {
             var client = GetBlobClient(fileName, prefix);
             var blockList = (await client.GetBlockListAsync()).Value;
@@ -50,7 +51,8 @@ namespace AzureUploader.Services
 
             await client.CommitBlockListAsync(blockIds, new BlobHttpHeaders()
             {
-                ContentType = GetContentType()
+                ContentType = GetContentType(),
+                ContentHash = hash
             });
 
             if (metadata != null)
