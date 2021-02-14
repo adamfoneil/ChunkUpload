@@ -27,6 +27,10 @@ namespace AzureUploader.Services
             _blockTracker = blockTracker;
         }        
 
+        public string AccountName { get => new BlobContainerClient(_connectionString, _containerName).AccountName; }
+
+        public string ContainerName { get => _containerName; }
+
         public async Task StageAsync(string userName, HttpRequest request, string prefix = null)
         {
             var containerClient = new BlobContainerClient(_connectionString, _containerName);
@@ -104,7 +108,6 @@ namespace AzureUploader.Services
 
         public async Task<bool> HasUploadsInProgress(string userName) => await _blockTracker.HasUploadsInProgress(userName);        
 
-        private BlockBlobClient GetBlobClient(string fileName, string prefix = null) => new BlockBlobClient(_connectionString, _containerName, BlobName(prefix, fileName));
-
+        public BlockBlobClient GetBlobClient(string fileName, string prefix = null) => new BlockBlobClient(_connectionString, _containerName, BlobName(prefix, fileName));
     }
 }

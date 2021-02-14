@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/adamfoneil/ChunkUpload</RepositoryUrl>
     <PackageProjectUrl>https://github.com/adamfoneil/ChunkUpload</PackageProjectUrl>
     <Description>Implement chunked uploads to Azure blob storage. Intended for use with DropzoneJS.</Description>
-    <Version>1.0.4</Version>
-    <PackageReleaseNotes>added AppDataTempFileProvider (ITempFileProvider) to let you perform operations on byte arrays that would otherwise require a MemoryStream</PackageReleaseNotes>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>added AccountName and ContainerName public read-only properties</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
