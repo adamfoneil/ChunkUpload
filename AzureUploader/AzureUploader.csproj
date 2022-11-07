@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.Net.SDK">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>AO.AzureUploader</PackageId>
     <Authors>Adam O'Neil</Authors>
